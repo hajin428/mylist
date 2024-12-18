@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Table(name = "answer", indexes = {
+        @Index(name = "idx_todo_id", columnList = "todo_id"),
+        @Index(name = "idx_todo_id_task_key", columnList = "todo_id, task_key")
+})
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
