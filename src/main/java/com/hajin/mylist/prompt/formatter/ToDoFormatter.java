@@ -31,5 +31,4 @@ public class ToDoFormatter {
 
         return sb.toString();
     }
-
 }
