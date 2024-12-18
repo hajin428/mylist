@@ -86,6 +86,22 @@ public class ToDoService {
     }
 
 
+    // 특정 날짜의 할 일 목록 조회
+    public List<GetToDoByDateResponseDto> getToDosByDate(GetToDoByDateRequestDto requestDto) {
+
+        // 특정 날짜의 To Do 목록만 조회
+        List<ToDo> toDos = toDoRepository.findAllByDueDate(requestDto.getDate());
+
+        List<GetToDoByDateResponseDto> responseDtos = new ArrayList<>();
+
+        for (ToDo toDo : toDos) {
+            responseDtos.add(new GetToDoByDateResponseDto(toDo));
+        }
+
+        return responseDtos;
+    }
+
+
     // 완료 여부 수정
     public CompletedUpdateResponseDto updateToDoCompleted(Long id, CompletedUpdateRequestDto requestDto) {
 

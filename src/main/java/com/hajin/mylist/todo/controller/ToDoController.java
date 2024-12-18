@@ -74,6 +74,17 @@ public class ToDoController {
     }
 
 
+    // 특정 날짜의 할 일 목록 조회
+    @Operation(summary = "특정 날짜의 To Do 조회", description = "특정 날짜에 등록된 할 일 목록을 조회합니다.")
+    @PostMapping("/bydate")
+    public ResponseEntity<List<GetToDoByDateResponseDto>> getToDosByDate(
+            @RequestBody GetToDoByDateRequestDto requestDto) {
+
+        List<GetToDoByDateResponseDto> responseDtos = toDoService.getToDosByDate(requestDto);
+        return ResponseEntity.ok(responseDtos);
+    }
+
+
     // 완료 여부 수정
     @Operation(summary = "완료 여부 수정", description = "항목에 대한 완료 여부만 수정합니다.")
     @PatchMapping("/{id}/completed")
