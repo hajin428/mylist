@@ -1,5 +1,6 @@
 package com.hajin.mylist.todo.entity;
 
+import com.hajin.mylist.answer.entity.Answer;
 import com.hajin.mylist.todo.dto.CompletedUpdateRequestDto;
 import com.hajin.mylist.todo.dto.CreateToDoRequestDto;
 import com.hajin.mylist.todo.dto.UpdateToDoRequestDto;
@@ -9,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "todo")
@@ -32,6 +35,9 @@ public class ToDo {
 
     @Column(nullable = false)
     private boolean completed; // 완료 여부
+
+    @OneToMany(mappedBy = "toDo", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Answer> answers = new ArrayList<>();
 
 
     // 할 일 작성

@@ -19,4 +19,7 @@ public class OpenAiRequestDto {
     @JsonProperty("messages")
     private List<ChatMessage> messages; // Chat Completion 메시지 리스트
 
+    @JsonProperty("temperature")
+    private Double temperature; // 창의성 조절 값 (0.0 ~ 1.0)
+
 }

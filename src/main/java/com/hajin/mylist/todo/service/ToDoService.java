@@ -75,6 +75,11 @@ public class ToDoService {
         // repository에서 전체 목록 찾기
         List<ToDo> toDos = toDoRepository.findAll();
 
+        // 목록이 비어 있는 경우 예외 처리
+        if (toDos.isEmpty()) {
+            throw new CustomException(ErrorMsg.TODO_NOT_FOUND);
+        }
+
         List<GetAllToDoResponseDto> responseDtos = new ArrayList<>();
 
         // 조회한 데이터 DTO로 변환
@@ -91,6 +96,11 @@ public class ToDoService {
 
         // 특정 날짜의 To Do 목록만 조회
         List<ToDo> toDos = toDoRepository.findAllByDueDate(requestDto.getDate());
+
+        // 목록이 비어 있으면 예외 발생
+        if (toDos.isEmpty()) {
+            throw new CustomException(ErrorMsg.TODO_NOT_FOUND_FOR_DATE);
+        }
 
         List<GetToDoByDateResponseDto> responseDtos = new ArrayList<>();
 
