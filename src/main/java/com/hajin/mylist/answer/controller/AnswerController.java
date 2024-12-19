@@ -19,7 +19,7 @@ public class AnswerController {
     // 특정 ToDo에 연관된 Answer 목록 조회
     @Operation(summary = "특정 To Do 항목의 AI 응답 조회", description = "한 개의 할 일 목록에 생성된 AI 응답 리스트를 조회합니다.")
     @GetMapping("/{toDoId}")
-    public ResponseEntity<List<AnswerResponseDto>> getAnswersByToDoId(@PathVariable Long toDoId) {
+    public ResponseEntity<List<AnswerResponseDto>> getAnswersByToDoId(@RequestParam Long toDoId) {
         List<AnswerResponseDto> responseDtos = answerService.getAnswersByToDoId(toDoId);
         return ResponseEntity.ok(responseDtos);
     }

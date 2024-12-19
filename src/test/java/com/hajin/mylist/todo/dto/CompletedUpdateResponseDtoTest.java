@@ -10,8 +10,9 @@ class CompletedUpdateResponseDtoTest {
 
     @Test
     void testCompletedUpdateResponseDtoConstructor_Success_WithMockToDo() {
+
         // Given
-        ToDo mockToDo = Mockito.mock(ToDo.class); // ToDo 객체를 Mock으로 생성
+        ToDo mockToDo = Mockito.mock(ToDo.class);
 
         // When
         CompletedUpdateResponseDto responseDto = new CompletedUpdateResponseDto(mockToDo);

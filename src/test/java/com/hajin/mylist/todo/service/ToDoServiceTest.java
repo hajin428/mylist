@@ -6,11 +6,13 @@ import com.hajin.mylist.todo.dto.*;
 import com.hajin.mylist.todo.entity.ToDo;
 import com.hajin.mylist.todo.repository.ToDoRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -145,6 +147,52 @@ class ToDoServiceTest {
         assertEquals(ErrorMsg.TODO_NOT_FOUND.getCode(), exception.getCode());
     }
 
+    @Test
+    @DisplayName("특정 날짜의 ToDo 목록 조회 - 성공 케이스")
+    void getToDosByDate_Success() {
+        // Given
+        LocalDate date = LocalDate.of(2024, 12, 25);
+        GetToDoByDateRequestDto requestDto = mock(GetToDoByDateRequestDto.class);
+        when(requestDto.getDate()).thenReturn(date);
+
+        ToDo mockToDo = mock(ToDo.class);
+        when(mockToDo.getId()).thenReturn(1L);
+        when(mockToDo.getTitle()).thenReturn("Test Title");
+        when(mockToDo.getDescription()).thenReturn("Test Description");
+        when(mockToDo.getDueDate()).thenReturn(date);
+
+        when(toDoRepository.findAllByDueDate(date)).thenReturn(List.of(mockToDo));
+
+        // When
+        List<GetToDoByDateResponseDto> response = toDoService.getToDosByDate(requestDto);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals("Test Title", response.get(0).getTitle());
+        assertEquals("Test Description", response.get(0).getDescription());
+        assertEquals(date, response.get(0).getDueDate());
+        verify(toDoRepository, times(1)).findAllByDueDate(date);
+    }
+
+    @Test
+    @DisplayName("특정 날짜의 ToDo 목록 조회 - 예외 케이스 (목록 없음)")
+    void getToDosByDate_NotFound() {
+        // Given
+        LocalDate date = LocalDate.of(2024, 12, 25);
+        GetToDoByDateRequestDto requestDto = mock(GetToDoByDateRequestDto.class);
+        when(requestDto.getDate()).thenReturn(date);
+
+        when(toDoRepository.findAllByDueDate(date)).thenReturn(List.of());
+
+        // When & Then
+        CustomException exception = assertThrows(CustomException.class, () ->
+                toDoService.getToDosByDate(requestDto));
+
+        assertEquals(1001, exception.getCode());
+        verify(toDoRepository, times(1)).findAllByDueDate(date);
+    }
+
 
     @Test
     void getAllToDos_Success() {
@@ -160,6 +208,20 @@ class ToDoServiceTest {
         assertEquals(1, response.size());
         verify(toDoRepository, times(1)).findAll();
     }
+
+    @Test
+    @DisplayName("할 일 목록 조회 - 목록이 비어 있을 때 예외 발생")
+    void getAllToDos_EmptyList() {
+        // Given
+        when(toDoRepository.findAll()).thenReturn(new ArrayList<>()); // 빈 리스트 반환
+
+        // When & Then
+        CustomException exception = assertThrows(CustomException.class, () -> toDoService.getAllToDos());
+
+        assertEquals(1000, exception.getCode());
+        verify(toDoRepository, times(1)).findAll();
+    }
+
 
 
     @Test
