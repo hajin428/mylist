@@ -1,10 +1,15 @@
 package com.hajin.mylist.answer.service;
 
+import com.hajin.mylist.answer.dto.AnswerGenerationResponseDto;
 import com.hajin.mylist.answer.dto.AnswerResponseDto;
 import com.hajin.mylist.answer.entity.Answer;
 import com.hajin.mylist.answer.repository.AnswerRepository;
 import com.hajin.mylist.exception.CustomException;
 import com.hajin.mylist.exception.ErrorMsg;
+import com.hajin.mylist.openAi.client.OpenAiClient;
+import com.hajin.mylist.openAi.dto.OpenAiRequestDto;
+import com.hajin.mylist.openAi.dto.OpenAiResponseDto;
+import com.hajin.mylist.prompt.promptGenerator.ToDoPromptGenerator;
 import com.hajin.mylist.todo.entity.ToDo;
 import com.hajin.mylist.todo.repository.ToDoRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +28,9 @@ public class AnswerService {
 
     private final AnswerRepository answerRepository;
     private final ToDoRepository toDoRepository;
+    private final OpenAiClient openAiClient;
+    private final ToDoPromptGenerator toDoPromptGenerator;
+
 
 
     // ToDo에 연관된 Answer 목록 조회
@@ -47,6 +56,32 @@ public class AnswerService {
 
         // DTO 생성
         return List.of(new AnswerResponseDto(toDo.getTitle(), contentList));
+    }
+
+
+    public AnswerGenerationResponseDto generateAndSaveAnswers(LocalDate date) {
+        try {
+            // Step 1: 프롬프트 생성
+            String prompt = toDoPromptGenerator.generatePromptForDate(date);
+
+            // Step 2: OpenAI API 호출
+            OpenAiRequestDto openAiRequest = new OpenAiRequestDto(
+                    "gpt-4-turbo",
+                    List.of(new com.theokanning.openai.completion.chat.ChatMessage("user", prompt)),
+                    1.0 // 창의성 설정
+            );
+
+            OpenAiResponseDto openAiResponse = openAiClient.sendPrompt(openAiRequest);
+
+            // Step 3: 응답 JSON 파싱 및 저장
+            String gptResponseContent = openAiResponse.getChoices().get(0).getMessage().getContent();
+            JSONObject jsonResponse = new JSONObject(gptResponseContent);
+            saveAnswersFromGptResponse(jsonResponse);
+
+            return new AnswerGenerationResponseDto("성공적으로 저장했습니다.");
+        } catch (Exception e) {
+            throw new RuntimeException("프롬프트 생성 및 저장 중 오류 발생: " + e.getMessage());
+        }
     }
 
 

@@ -1,16 +1,19 @@
 package com.hajin.mylist.answer.controller;
 
+import com.hajin.mylist.answer.dto.AnswerGenerationRequestDto;
+import com.hajin.mylist.answer.dto.AnswerGenerationResponseDto;
 import com.hajin.mylist.answer.dto.AnswerResponseDto;
 import com.hajin.mylist.answer.service.AnswerService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/answers")
+@RequestMapping("/api/answers")
 @RequiredArgsConstructor
 public class AnswerController {
 
@@ -21,6 +24,14 @@ public class AnswerController {
     @GetMapping("/{toDoId}")
     public ResponseEntity<List<AnswerResponseDto>> getAnswersByToDoId(@RequestParam Long toDoId) {
         List<AnswerResponseDto> responseDtos = answerService.getAnswersByToDoId(toDoId);
-        return ResponseEntity.ok(responseDtos);
+        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+    }
+
+    // 프롬프트 생성 및 AI 응답 저장
+    @Operation(summary = "프롬프트 생성 및 OpenAI 호출", description = "특정 날짜의 To Do 데이터 기반으로 프롬프트 생성 및 AI 응답 저장")
+    @PostMapping("/generate")
+    public ResponseEntity<AnswerGenerationResponseDto> generateAndSaveAnswers(@RequestBody AnswerGenerationRequestDto requestDto) {
+        AnswerGenerationResponseDto responseDto = answerService.generateAndSaveAnswers(requestDto.getDate());
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 }
