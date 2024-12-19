@@ -4,6 +4,7 @@ import com.hajin.mylist.exception.CustomException;
 import com.hajin.mylist.exception.ErrorMsg;
 import com.hajin.mylist.todo.dto.*;
 import com.hajin.mylist.todo.entity.ToDo;
+import org.springframework.cache.annotation.Cacheable;
 import com.hajin.mylist.todo.repository.ToDoRepository;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +71,7 @@ public class ToDoService {
 
 
     // 할 일 목록 전체 조회
+    @Cacheable(value = "getAllToDos")
     public List<GetAllToDoResponseDto> getAllToDos() {
 
         // repository에서 전체 목록 찾기
@@ -92,6 +94,7 @@ public class ToDoService {
 
 
     // 특정 날짜의 할 일 목록 조회
+    @Cacheable(value = "getToDosByDate", key = "#requestDto.date.toString()")
     public List<GetToDoByDateResponseDto> getToDosByDate(GetToDoByDateRequestDto requestDto) {
 
         // 특정 날짜의 To Do 목록만 조회
