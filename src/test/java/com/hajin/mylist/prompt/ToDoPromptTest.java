@@ -39,7 +39,7 @@ public class ToDoPromptTest {
     @Test
     public void testToDoPromptGenerationAndOpenAiCall() {
         // Given: 특정 날짜의 To Do 데이터 준비
-        LocalDate testDate = LocalDate.of(2024, 12, 15);
+        LocalDate testDate = LocalDate.of(2024, 12, 20);
         List<ToDo> testToDos = toDoRepository.findAllByDueDate(testDate);
 
         // 특정 날짜에 데이터가 없을 때
