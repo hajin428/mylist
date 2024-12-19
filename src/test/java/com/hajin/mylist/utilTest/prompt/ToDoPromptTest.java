@@ -1,4 +1,4 @@
-package com.hajin.mylist.prompt;
+package com.hajin.mylist.utilTest.prompt;
 
 import com.hajin.mylist.answer.entity.Answer;
 import com.hajin.mylist.answer.service.AnswerService;

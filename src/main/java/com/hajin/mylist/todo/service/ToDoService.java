@@ -4,6 +4,7 @@ import com.hajin.mylist.exception.CustomException;
 import com.hajin.mylist.exception.ErrorMsg;
 import com.hajin.mylist.todo.dto.*;
 import com.hajin.mylist.todo.entity.ToDo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import com.hajin.mylist.todo.repository.ToDoRepository;
 import org.springframework.stereotype.Service;
@@ -12,38 +13,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ToDoService {
 
     private final ToDoRepository toDoRepository;
-
-    public ToDoService(ToDoRepository toDoRepository) {
-        this.toDoRepository = toDoRepository;
-    }
 
     // 할 일 작성
     public CreateToDoResponseDto createToDo(CreateToDoRequestDto requestDto) {
 
         ToDo toDo = new ToDo (requestDto);
 
-        toDoRepository.save(toDo);
+        ToDo savedToDo = toDoRepository.save(toDo);
 
-        return new CreateToDoResponseDto(toDo);
+        return new CreateToDoResponseDto(savedToDo);
     }
 
 
     // 할 일 수정
     public UpdateToDoResponseDto updateToDo(Long id, UpdateToDoRequestDto requestDto) {
 
-        // id로 항목 찾기
         ToDo toDo = toDoRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorMsg.TODO_NOT_FOUND));
 
         toDo.update(requestDto);
 
-        toDoRepository.save(toDo);
+        ToDo updatedToDo = toDoRepository.save(toDo);
 
-        return new UpdateToDoResponseDto(toDo);
+        return new UpdateToDoResponseDto(updatedToDo);
     }
+
 
 
     // 할 일 단건 조회
@@ -123,8 +121,8 @@ public class ToDoService {
 
         toDo.setCompleted(requestDto);
 
-        toDoRepository.save(toDo);
+        ToDo updatedToDo = toDoRepository.save(toDo);
 
-        return new CompletedUpdateResponseDto(toDo);
+        return new CompletedUpdateResponseDto(updatedToDo);
     }
 }

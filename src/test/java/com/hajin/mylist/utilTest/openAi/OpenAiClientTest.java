@@ -1,4 +1,4 @@
-package com.hajin.mylist.openAi;
+package com.hajin.mylist.utilTest.openAi;
 
 import com.hajin.mylist.openAi.client.OpenAiClient;
 import com.hajin.mylist.openAi.dto.OpenAiRequestDto;

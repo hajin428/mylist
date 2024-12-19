@@ -24,6 +24,32 @@ public class AnswerService {
     private final ToDoRepository toDoRepository;
 
 
+    // ToDo에 연관된 Answer 목록 조회
+    public List<AnswerResponseDto> getAnswersByToDoId(Long toDoId) {
+
+        // ToDo를 가져옴
+        ToDo toDo = toDoRepository.findById(toDoId)
+                .orElseThrow(() -> new CustomException(ErrorMsg.TODO_NOT_FOUND));
+
+        // Answer 목록 조회
+        List<Answer> answers = answerRepository.findAllByToDoId(toDoId);
+
+        // Answer가 없을 경우 예외 처리
+        if (answers.isEmpty()) {
+            throw new CustomException(ErrorMsg.ANSWER_NOT_FOUND);
+        }
+
+        // Answer의 content를 리스트로 변환
+        List<String> contentList = new ArrayList<>();
+        for (Answer answer : answers) {
+            contentList.add(answer.getContent());
+        }
+
+        // DTO 생성
+        return List.of(new AnswerResponseDto(toDo.getTitle(), contentList));
+    }
+
+
     // AI 응답 JSON 파싱 및 저장
     public void saveAnswersFromGptResponse(JSONObject jsonResponse) {
         // "tasks" 배열을 파싱
@@ -49,33 +75,6 @@ public class AnswerService {
                 saveAnswer(toDo, key, value);
             }
         }
-    }
-
-
-    // ToDo에 연관된 Answer 목록 조회
-    public List<AnswerResponseDto> getAnswersByToDoId(Long toDoId) {
-
-        // ToDo를 가져옴
-        ToDo toDo = toDoRepository.findById(toDoId)
-                .orElseThrow(() -> new CustomException(ErrorMsg.TODO_NOT_FOUND));
-
-        // Answer 목록 조회
-        List<Answer> answers = answerRepository.findAllByToDoId(toDoId);
-
-        // Answer가 없을 경우 예외 처리
-        if (answers.isEmpty()) {
-            throw new CustomException(ErrorMsg.ANSWER_NOT_FOUND);
-        }
-
-        // Answer의 content를 리스트로 변환
-        List<String> contentList = new ArrayList<>();
-        for (Answer answer : answers) {
-            contentList.add(answer.getContent());
-        }
-
-        // DTO 생성
-        return List.of(new AnswerResponseDto(toDo.getTitle(), contentList));
-
     }
 
 
