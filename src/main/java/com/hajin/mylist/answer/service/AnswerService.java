@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.theokanning.openai.completion.chat.ChatMessage;
+
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
@@ -58,7 +60,7 @@ public class AnswerService {
         return List.of(new AnswerResponseDto(toDo.getTitle(), contentList));
     }
 
-
+    // 프롬프트 생성 및 AI 응답 저장
     public AnswerGenerationResponseDto generateAndSaveAnswers(LocalDate date) {
         try {
             // Step 1: 프롬프트 생성
@@ -67,7 +69,7 @@ public class AnswerService {
             // Step 2: OpenAI API 호출
             OpenAiRequestDto openAiRequest = new OpenAiRequestDto(
                     "gpt-4-turbo",
-                    List.of(new com.theokanning.openai.completion.chat.ChatMessage("user", prompt)),
+                    List.of(new ChatMessage("user", prompt)),
                     1.0 // 창의성 설정
             );
 
@@ -78,7 +80,7 @@ public class AnswerService {
             JSONObject jsonResponse = new JSONObject(gptResponseContent);
             saveAnswersFromGptResponse(jsonResponse);
 
-            return new AnswerGenerationResponseDto("성공적으로 저장했습니다.");
+            return new AnswerGenerationResponseDto();
         } catch (Exception e) {
             throw new RuntimeException("프롬프트 생성 및 저장 중 오류 발생: " + e.getMessage());
         }

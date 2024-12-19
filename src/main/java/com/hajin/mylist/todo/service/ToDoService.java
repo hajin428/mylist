@@ -23,9 +23,9 @@ public class ToDoService {
 
         ToDo toDo = new ToDo (requestDto);
 
-        ToDo savedToDo = toDoRepository.save(toDo);
+        toDoRepository.save(toDo);
 
-        return new CreateToDoResponseDto(savedToDo);
+        return new CreateToDoResponseDto();
     }
 
 
@@ -37,9 +37,9 @@ public class ToDoService {
 
         toDo.update(requestDto);
 
-        ToDo updatedToDo = toDoRepository.save(toDo);
+        toDoRepository.save(toDo);
 
-        return new UpdateToDoResponseDto(updatedToDo);
+        return new UpdateToDoResponseDto();
     }
 
 
@@ -121,8 +121,8 @@ public class ToDoService {
 
         toDo.setCompleted(requestDto);
 
-        ToDo updatedToDo = toDoRepository.save(toDo);
+        toDoRepository.save(toDo);
 
-        return new CompletedUpdateResponseDto(updatedToDo);
+        return new CompletedUpdateResponseDto();
     }
 }
