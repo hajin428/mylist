@@ -12,18 +12,19 @@ import static org.mockito.Mockito.mock;
 class AnswerTest {
 
     @Test
-    @DisplayName("Answer 생성자 테스트 - ToDo와 key, content, createdAt을 통한 생성")
+    @DisplayName("Answer 생성자 테스트")
     void testConstructorWithParameters() {
-        // Given: Mocked ToDo와 초기 데이터 준비
+
+        // Given
         ToDo toDo = mock(ToDo.class);
         int taskKey = 1;
         String content = "AI 응답 내용";
         LocalDateTime createdAt = LocalDateTime.of(2024, 12, 19, 10, 0);
 
-        // When: Answer 객체 생성
+        // When
         Answer answer = new Answer(toDo, taskKey, content, createdAt);
 
-        // Then: 필드 값 검증
+        // Then
         assertEquals(toDo, answer.getToDo());
         assertEquals(taskKey, answer.getTaskKey());
         assertEquals(content, answer.getContent());
@@ -33,10 +34,11 @@ class AnswerTest {
     @Test
     @DisplayName("Answer 기본 생성자 테스트")
     void testDefaultConstructor() {
-        // Given & When: Answer 기본 생성자 호출
+
+        // Given & When
         Answer answer = new Answer();
 
-        // Then: 기본값 검증
+        // Then
         assertEquals(null, answer.getToDo());
         assertEquals(0, answer.getTaskKey());
         assertEquals(null, answer.getContent());

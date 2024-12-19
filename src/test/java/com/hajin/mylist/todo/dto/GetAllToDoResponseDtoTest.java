@@ -1,8 +1,8 @@
 package com.hajin.mylist.todo.dto;
 
 import com.hajin.mylist.todo.entity.ToDo;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.time.LocalDate;
 
@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 class GetAllToDoResponseDtoTest {
 
     @Test
+    @DisplayName("GetAllToDoResponseDto 생성자 테스트")
     void testGetAllToDoResponseDtoConstructor_WithMockToDo() {
 
         // Given

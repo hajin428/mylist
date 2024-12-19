@@ -1,6 +1,7 @@
 package com.hajin.mylist.todo.dto;
 
 import com.hajin.mylist.todo.entity.ToDo;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import static org.mockito.Mockito.*;
 class GetToDoResponseDtoTest {
 
     @Test
+    @DisplayName("GetToDoResponseDto 생성자 테스트")
     void testGetToDoResponseDtoConstructor_WithMockToDo() {
 
         // Given

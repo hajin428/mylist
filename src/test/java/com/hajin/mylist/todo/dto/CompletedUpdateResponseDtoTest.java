@@ -1,6 +1,7 @@
 package com.hajin.mylist.todo.dto;
 
 import com.hajin.mylist.todo.entity.ToDo;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -9,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class CompletedUpdateResponseDtoTest {
 
     @Test
+    @DisplayName("CompletedUpdateResponseDto 생성자 테스트")
     void testCompletedUpdateResponseDtoConstructor_Success_WithMockToDo() {
 
         // Given

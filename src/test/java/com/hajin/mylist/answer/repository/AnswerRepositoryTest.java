@@ -46,7 +46,6 @@ class AnswerRepositoryTest {
         assertEquals("Answer Content 1", answers.get(0).getContent());
         assertEquals("Answer Content 2", answers.get(1).getContent());
 
-        // Verify that the repository method was called once
         verify(answerRepository, times(1)).findAllByToDoId(toDoId);
     }
 }

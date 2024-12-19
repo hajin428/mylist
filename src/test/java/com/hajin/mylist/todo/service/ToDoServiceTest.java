@@ -35,6 +35,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("할 일 생성 - 성공 케이스")
     void createToDo_Success() {
 
         // Given
@@ -52,6 +53,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("할 일 수정 - 성공 케이스")
     void updateToDo_Success() {
 
         // Given
@@ -72,6 +74,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("할 일 수정 - ToDo 항목을 찾을 수 없을 때 예외 발생")
     void updateToDo_ThrowsException_WhenNotFound() {
 
         // Given
@@ -88,6 +91,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("할 일 단건 조회 - 성공 케이스")
     void getToDoById_Success() {
 
         // Given
@@ -105,6 +109,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("할 일 단건 조회 - ToDo 항목을 찾을 수 없을 때 예외 발생")
     void getToDoById_ThrowsException_WhenNotFound() {
         // Given
         Long id = 1L;
@@ -119,6 +124,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("할 일 삭제 - 성공 케이스")
     void deleteToDo_Success() {
         // Given
         Long id = 1L;
@@ -135,6 +141,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("할 일 삭제 - ToDo 항목을 찾을 수 없을 때 예외 발생")
     void deleteToDo_ThrowsException_WhenNotFound() {
         // Given
         Long id = 1L;
@@ -195,6 +202,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("전체 할 일 조회 - 성공 케이스")
     void getAllToDos_Success() {
         // Given
         List<ToDo> toDoList = new ArrayList<>();
@@ -213,7 +221,7 @@ class ToDoServiceTest {
     @DisplayName("할 일 목록 조회 - 목록이 비어 있을 때 예외 발생")
     void getAllToDos_EmptyList() {
         // Given
-        when(toDoRepository.findAll()).thenReturn(new ArrayList<>()); // 빈 리스트 반환
+        when(toDoRepository.findAll()).thenReturn(new ArrayList<>());
 
         // When & Then
         CustomException exception = assertThrows(CustomException.class, () -> toDoService.getAllToDos());
@@ -225,6 +233,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("할 일 완료 여부 수정 - 성공 케이스")
     void updateToDoCompleted_Success() {
         // Given
         Long id = 1L;
@@ -244,6 +253,7 @@ class ToDoServiceTest {
 
 
     @Test
+    @DisplayName("할 일 완료 여부 수정 - ToDo 항목을 찾을 수 없을 때 예외 발생")
     void updateToDoCompleted_ThrowsException_WhenNotFound() {
         // Given
         Long id = 1L;
