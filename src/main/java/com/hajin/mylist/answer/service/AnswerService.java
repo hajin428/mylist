@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.theokanning.openai.completion.chat.ChatMessage;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +61,9 @@ public class AnswerService {
         return List.of(new AnswerResponseDto(toDo.getTitle(), contentList));
     }
 
+
     // 프롬프트 생성 및 AI 응답 저장
+    @Transactional
     public AnswerGenerationResponseDto generateAndSaveAnswers(LocalDate date) {
         try {
             // Step 1: 프롬프트 생성

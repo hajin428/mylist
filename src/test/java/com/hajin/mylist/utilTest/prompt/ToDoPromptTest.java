@@ -16,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,6 +39,7 @@ public class ToDoPromptTest {
     private AnswerService answerService;
 
     @Test
+    @Transactional
     @DisplayName("통합 테스트 - ToDo 데이터 조회, 프롬프트 생성, OpenAI 호출, 응답 저장 및 검증")
     public void testToDoPromptGenerationAndOpenAiCall() {
         // Given: 특정 날짜의 To Do 데이터 준비

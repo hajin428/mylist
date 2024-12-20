@@ -39,7 +39,7 @@ public class ToDo {
     @Column(nullable = false)
     private boolean completed; // 완료 여부
 
-    @OneToMany(mappedBy = "toDo", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "toDo", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
 
 
