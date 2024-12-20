@@ -86,7 +86,11 @@ AI 기반의 준비사항 생성은 사용자의 할 일을 분석하고, 맞춤
 ![시퀀스 다이어그램](./docs/sequence-diagram.png)
 
 ---
-## 🛠️ 6. 기술 스택 
+## 🛠️ 6. Test Coverage
+![Jacoco 리포트](./docs/jacoco-test-coverage.png)
+
+---
+## 🛠️ 7. 기술 스택 
 
 | **분류**       | **기술 스택**       |
 |----------------|--------------------|
@@ -97,6 +101,6 @@ AI 기반의 준비사항 생성은 사용자의 할 일을 분석하고, 맞춤
 | **환경 관리**  | Docker, Redis       |
 
 
-## ✉️ 7. contact
+## ✉️ 8. contact
 - Back-end Developer 권하진
 - email: amm_321@naver.com
