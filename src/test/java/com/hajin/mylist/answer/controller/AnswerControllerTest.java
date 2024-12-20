@@ -7,6 +7,7 @@ import com.hajin.mylist.answer.service.AnswerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.*;
 
 public class AnswerControllerTest {
 
+    @InjectMocks
     private AnswerController answerController;
 
     @Mock
@@ -29,7 +31,6 @@ public class AnswerControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        answerController = new AnswerController(answerService);
     }
 
     @Test

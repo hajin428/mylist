@@ -5,6 +5,7 @@ import com.hajin.mylist.todo.service.ToDoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
@@ -22,15 +23,14 @@ import static org.mockito.Mockito.when;
 
 public class ToDoControllerTest {
 
+    @InjectMocks
     private ToDoController toDoController;
 
     @Mock
     private ToDoService toDoService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        toDoController = new ToDoController(toDoService);
+    public ToDoControllerTest() {
+        MockitoAnnotations.openMocks(this); // Mock 객체를 초기화
     }
 
     @Test

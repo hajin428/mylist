@@ -8,6 +8,9 @@ import com.hajin.mylist.todo.repository.ToDoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,15 +21,18 @@ import static org.mockito.Mockito.*;
 
 class ToDoPromptGeneratorTest {
 
+    @InjectMocks
     private ToDoPromptGenerator toDoPromptGenerator;
+
+    @Mock
     private ToDoRepository toDoRepository;
+
+    @Mock
     private ToDoFormatter toDoFormatter;
 
     @BeforeEach
     void setUp() {
-        toDoRepository = mock(ToDoRepository.class);
-        toDoFormatter = mock(ToDoFormatter.class);
-        toDoPromptGenerator = new ToDoPromptGenerator(toDoRepository, toDoFormatter);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
