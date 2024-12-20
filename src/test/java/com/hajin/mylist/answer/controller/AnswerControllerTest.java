@@ -1,5 +1,7 @@
 package com.hajin.mylist.answer.controller;
 
+import com.hajin.mylist.answer.dto.AnswerGenerationRequestDto;
+import com.hajin.mylist.answer.dto.AnswerGenerationResponseDto;
 import com.hajin.mylist.answer.dto.AnswerResponseDto;
 import com.hajin.mylist.answer.service.AnswerService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,5 +49,26 @@ public class AnswerControllerTest {
         assertEquals(mockResponseDtos, response.getBody());
 
         verify(answerService, times(1)).getAnswersByToDoId(toDoId);
+    }
+
+
+    @Test
+    @DisplayName("프롬프트 생성 및 AI 응답 저장 테스트")
+    void generateAndSaveAnswers() {
+        // Given
+        LocalDate testDate = LocalDate.of(2024, 12, 20);
+        AnswerGenerationRequestDto requestDto = new AnswerGenerationRequestDto(testDate);
+        AnswerGenerationResponseDto mockResponseDto = new AnswerGenerationResponseDto("AI 응답이 성공적으로 저장되었습니다.");
+
+        when(answerService.generateAndSaveAnswers(any(LocalDate.class))).thenReturn(mockResponseDto);
+
+        // When
+        ResponseEntity<AnswerGenerationResponseDto> response = answerController.generateAndSaveAnswers(requestDto);
+
+        // Then
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(mockResponseDto, response.getBody());
+
+        verify(answerService, times(1)).generateAndSaveAnswers(testDate);
     }
 }

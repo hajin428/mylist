@@ -1,10 +1,15 @@
 package com.hajin.mylist.answer.service;
 
+import com.hajin.mylist.answer.dto.AnswerGenerationResponseDto;
 import com.hajin.mylist.answer.dto.AnswerResponseDto;
 import com.hajin.mylist.answer.entity.Answer;
 import com.hajin.mylist.answer.repository.AnswerRepository;
 import com.hajin.mylist.exception.CustomException;
 import com.hajin.mylist.exception.ErrorMsg;
+import com.hajin.mylist.openAi.client.OpenAiClient;
+import com.hajin.mylist.openAi.dto.OpenAiRequestDto;
+import com.hajin.mylist.openAi.dto.OpenAiResponseDto;
+import com.hajin.mylist.prompt.promptGenerator.ToDoPromptGenerator;
 import com.hajin.mylist.todo.entity.ToDo;
 import com.hajin.mylist.todo.repository.ToDoRepository;
 import org.json.JSONArray;
@@ -16,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +36,12 @@ public class AnswerServiceTest {
 
     @Mock
     private ToDoRepository toDoRepository;
+
+    @Mock
+    private ToDoPromptGenerator toDoPromptGenerator;
+
+    @Mock
+    private OpenAiClient openAiClient;
 
     @InjectMocks
     private AnswerService answerService;
@@ -93,6 +105,69 @@ public class AnswerServiceTest {
         verify(toDoRepository, times(1)).findById(1L);
         verify(answerRepository, never()).save(any(Answer.class));
     }
+
+    @Test
+    @DisplayName("프롬프트 생성 및 AI 응답 저장 성공 테스트")
+    void generateAndSaveAnswers_Success() {
+        // Given
+        LocalDate testDate = LocalDate.of(2024, 12, 20);
+        String mockPrompt = "Mock prompt";
+
+        // Mock 데이터 준비
+        OpenAiResponseDto mockResponse = mock(OpenAiResponseDto.class);
+        OpenAiResponseDto.Choice mockChoice = mock(OpenAiResponseDto.Choice.class);
+        OpenAiResponseDto.Message mockMessage = mock(OpenAiResponseDto.Message.class);
+
+        String mockJsonResponse = """
+        {
+            "tasks": [
+                {
+                    "id": 1,
+                    "preparations": [
+                        {"task_key": 1, "value": "Step 1"}
+                    ]
+                }
+            ]
+        }
+        """;
+
+        // Mock 설정
+        when(toDoPromptGenerator.generatePromptForDate(testDate)).thenReturn(mockPrompt);
+        when(openAiClient.sendPrompt(any(OpenAiRequestDto.class))).thenReturn(mockResponse);
+        when(mockResponse.getChoices()).thenReturn(List.of(mockChoice));
+        when(mockChoice.getMessage()).thenReturn(mockMessage);
+        when(mockMessage.getContent()).thenReturn(mockJsonResponse);
+
+        doNothing().when(answerService).saveAnswersFromGptResponse(any(JSONObject.class));
+
+        // When
+        AnswerGenerationResponseDto result = answerService.generateAndSaveAnswers(testDate);
+
+        // Then
+        assertNotNull(result, "Response should not be null.");
+        verify(toDoPromptGenerator, times(1)).generatePromptForDate(testDate);
+        verify(openAiClient, times(1)).sendPrompt(any(OpenAiRequestDto.class));
+    }
+
+
+
+    @Test
+    @DisplayName("프롬프트 생성 및 AI 응답 저장 실패 테스트 - 프롬프트 생성 오류")
+    void generateAndSaveAnswers_PromptGenerationFailed() {
+        // Given
+        LocalDate testDate = LocalDate.of(2024, 12, 20);
+        when(toDoPromptGenerator.generatePromptForDate(testDate))
+                .thenThrow(new RuntimeException("Mock prompt generation error"));
+
+        // When & Then
+        CustomException exception = assertThrows(CustomException.class, () ->
+                answerService.generateAndSaveAnswers(testDate));
+
+        assertEquals(ErrorMsg.PROMPT_GENERATION_FAILED.getCode(), exception.getCode());
+        verify(toDoPromptGenerator, times(1)).generatePromptForDate(testDate);
+        verifyNoInteractions(openAiClient);
+    }
+
 
     @Test
     @DisplayName("정상적인 ToDo ID로 Answer 목록 조회 테스트")

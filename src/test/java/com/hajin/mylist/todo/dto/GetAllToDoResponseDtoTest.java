@@ -6,11 +6,25 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class GetAllToDoResponseDtoTest {
+
+    @Test
+    @DisplayName("GetAllToDoResponseDto 기본 생성자 테스트")
+    void testGetAllToDoResponseDtoDefaultConstructor() {
+        // When
+        GetAllToDoResponseDto responseDto = new GetAllToDoResponseDto();
+
+        // Then
+        assertNull(responseDto.getId());
+        assertNull(responseDto.getTitle());
+        assertNull(responseDto.getDescription());
+        assertNull(responseDto.getDueDate());
+        assertFalse(responseDto.isCompleted());
+    }
 
     @Test
     @DisplayName("GetAllToDoResponseDto 생성자 테스트")

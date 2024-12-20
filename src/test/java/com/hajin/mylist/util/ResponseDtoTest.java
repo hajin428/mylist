@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ResponseDtoTest {
 
     @Test
-    @DisplayName("toExceptionResponseEntity 메서드 테스트 - BAD_REQUEST")
+    @DisplayName("toExceptionResponseEntity 메서드 테스트")
     void testToExceptionResponseEntity_BadRequest() {
         // Given
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

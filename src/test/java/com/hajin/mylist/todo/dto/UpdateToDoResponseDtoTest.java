@@ -10,16 +10,14 @@ import static org.mockito.Mockito.mock;
 class UpdateToDoResponseDtoTest {
 
     @Test
-    @DisplayName("UpdateToDoResponseDto 생성자 테스트 - 메시지 확인")
-    void testUpdateToDoResponseDtoConstructor() {
-
-        // Given
-        ToDo mockToDo = mock(ToDo.class);
+    @DisplayName("UpdateToDoResponseDto 기본 생성자 테스트 - 메시지 확인")
+    void testUpdateToDoResponseDtoDefaultConstructor() {
 
         // When
-        UpdateToDoResponseDto responseDto = new UpdateToDoResponseDto(mockToDo);
+        UpdateToDoResponseDto responseDto = new UpdateToDoResponseDto();
 
         // Then
-        assertEquals("수정이 완료되었습니다.", responseDto.getMessage());
+        assertEquals("수정이 완료되었습니다.", responseDto.getMessage(),
+                "The message should be '수정이 완료되었습니다.'");
     }
 }

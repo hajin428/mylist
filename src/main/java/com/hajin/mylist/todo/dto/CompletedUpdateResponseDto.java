@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Schema(description = "완료 여부 수정 응답 데이터")
 public class CompletedUpdateResponseDto {
 

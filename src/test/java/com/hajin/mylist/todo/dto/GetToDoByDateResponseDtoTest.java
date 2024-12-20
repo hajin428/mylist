@@ -11,16 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class GetToDoResponseDtoTest {
+class GetToDoByDateResponseDtoTest {
 
     @Test
-    @DisplayName("GetToDoResponseDto 기본 생성자 테스트")
-    void testGetToDoResponseDtoDefaultConstructor() {
+    @DisplayName("GetToDoByDateResponseDto 기본 생성자 테스트")
+    void testGetToDoByDateResponseDtoDefaultConstructor() {
         // When
-        GetToDoResponseDto responseDto = new GetToDoResponseDto();
+        GetToDoByDateResponseDto responseDto = new GetToDoByDateResponseDto();
 
         // Then
-        assertNull(responseDto.getId(), "ID should be null by default.");
         assertNull(responseDto.getTitle(), "Title should be null by default.");
         assertNull(responseDto.getDescription(), "Description should be null by default.");
         assertNull(responseDto.getDueDate(), "DueDate should be null by default.");
@@ -28,28 +27,25 @@ class GetToDoResponseDtoTest {
     }
 
     @Test
-    @DisplayName("GetToDoResponseDto ToDo 객체 기반 생성자 테스트")
-    void testGetToDoResponseDtoConstructor_WithMockToDo() {
+    @DisplayName("GetToDoByDateResponseDto ToDo 객체 기반 생성자 테스트")
+    void testGetToDoByDateResponseDtoConstructor_WithMockToDo() {
 
         // Given
         ToDo mockToDo = mock(ToDo.class);
-        Long mockId = 1L;
         String mockTitle = "Mock Title";
         String mockDescription = "Mock Description";
         LocalDate mockDueDate = LocalDate.of(2024, 12, 12);
         boolean mockCompleted = true;
 
-        when(mockToDo.getId()).thenReturn(mockId);
         when(mockToDo.getTitle()).thenReturn(mockTitle);
         when(mockToDo.getDescription()).thenReturn(mockDescription);
         when(mockToDo.getDueDate()).thenReturn(mockDueDate);
         when(mockToDo.isCompleted()).thenReturn(mockCompleted);
 
         // When
-        GetToDoResponseDto responseDto = new GetToDoResponseDto(mockToDo);
+        GetToDoByDateResponseDto responseDto = new GetToDoByDateResponseDto(mockToDo);
 
         // Then
-        assertEquals(mockId, responseDto.getId());
         assertEquals(mockTitle, responseDto.getTitle());
         assertEquals(mockDescription, responseDto.getDescription());
         assertEquals(mockDueDate, responseDto.getDueDate());

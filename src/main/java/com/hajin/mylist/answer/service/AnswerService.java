@@ -82,7 +82,7 @@ public class AnswerService {
 
             return new AnswerGenerationResponseDto();
         } catch (Exception e) {
-            throw new RuntimeException("프롬프트 생성 및 저장 중 오류 발생: " + e.getMessage());
+            throw new CustomException(ErrorMsg.PROMPT_GENERATION_FAILED);
         }
     }
 

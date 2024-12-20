@@ -10,14 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class CompletedUpdateResponseDtoTest {
 
     @Test
-    @DisplayName("CompletedUpdateResponseDto 생성자 테스트")
-    void testCompletedUpdateResponseDtoConstructor_Success_WithMockToDo() {
-
-        // Given
-        ToDo mockToDo = Mockito.mock(ToDo.class);
+    @DisplayName("CompletedUpdateResponseDto 기본 생성자 테스트")
+    void testCompletedUpdateResponseDtoDefaultConstructor() {
 
         // When
-        CompletedUpdateResponseDto responseDto = new CompletedUpdateResponseDto(mockToDo);
+        CompletedUpdateResponseDto responseDto = new CompletedUpdateResponseDto();
 
         // Then
         assertEquals("수정이 완료되었습니다.", responseDto.getMessege(),
