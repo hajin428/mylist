@@ -1,4 +1,4 @@
-# ✅TaskWise: To Do & Calender API
+# 🧾My list: To Do & Calender API
 ---
 
 ### ✔️ 핵심 기능
