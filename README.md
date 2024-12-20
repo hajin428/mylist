@@ -1,4 +1,4 @@
-# ✅TaskWise: To Do & Calender API
+# 🧾My list: To Do & Calender API
 ---
 
 ### ✔️ 핵심 기능
@@ -54,18 +54,18 @@ openai.api.key= <email로 제공된 API KEY>
 
 ---
 ## 📄 4. API 명세서
+| **Action**                   | **API**                           | **Parameter**                              | **Body**                                                                                                                                          | **Response**                                                                                                                                                                |
+|------------------------------|-----------------------------------|-------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **특정 To Do의 AI 응답 조회** | GET `/api/answers/{toDoId}`       | `toDoId` (PathVariable, Long)             | 없음                                                                                                                                               | `{ "status": "success", "message": "AI 응답 조회 성공", "data": [{ "toDoTitle": "Task Title", "answers": ["Answer 1", "Answer 2"] }] }`                                    |
+| **프롬프트 생성 및 AI 응답 저장** | POST `/api/answers/generate`      | 없음                                       | `{ "date": "2024-12-20" }`                                                                                                                       | `{ "status": "success", "message": "응답이 성공적으로 저장되었습니다.", "data": null }`                                                                                    |
+| **To Do 작성**               | POST `/api/todo`                  | 없음                                       | `{ "title": "Sample Task", "description": "Task description", "dueDate": "2024-12-12" }`                                                         | `{ "status": "success", "message": "작성이 완료되었습니다.", "data": { "id": 1 } }`                                                                                       |
+| **To Do 수정**               | PUT `/api/todo/{id}`              | `id` (PathVariable, Long)                 | `{ "title": "Updated Task", "description": "Updated description", "dueDate": "2024-12-15", "completed": true }`                                  | `{ "status": "success", "message": "수정이 완료되었습니다.", "data": null }`                                                                                              |
+| **To Do 단건 조회**          | GET `/api/todo/{id}`              | `id` (PathVariable, Long)                 | 없음                                                                                                                                               | `{ "status": "success", "message": "조회 성공", "data": { "id": 1, "title": "Sample Task", "description": "Task description", "dueDate": "2024-12-12", "completed": false } }` |
+| **To Do 삭제**               | DELETE `/api/todo/{id}`           | `id` (PathVariable, Long)                 | 없음                                                                                                                                               | `{ "status": "success", "message": "항목이 삭제되었습니다.", "data": null }`                                                                                              |
+| **To Do 전체 조회**          | GET `/api/todo/alltodo`           | 없음                                       | 없음                                                                                                                                               | `{ "status": "success", "message": "전체 조회 성공", "data": [{ "id": 1, "title": "Task 1", "description": "Description 1", "dueDate": "2024-12-12", "completed": false }] }` |
+| **특정 날짜의 To Do 조회**    | POST `/api/todo/bydate`           | 없음                                       | `{ "date": "2024-12-12" }`                                                                                                                       | `{ "status": "success", "message": "조회 성공", "data": [{ "title": "Task 1", "description": "Description 1", "dueDate": "2024-12-12", "completed": false }] }`             |
+| **To Do 완료 여부 수정**      | PATCH `/api/todo/{id}/completed`  | `id` (PathVariable, Long)                 | `{ "completed": true }`                                                                                                                           | `{ "status": "success", "message": "수정이 완료되었습니다.", "data": null }`                                                                                              |
 
-| **기능**                        | **API**                           | **Parameter**                              | **Body**                                                                                      | **Response**                                                                                         |
-|---------------------------------|-----------------------------------|-------------------------------------------|----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-| **특정 To Do의 AI 응답 조회**    | GET `/api/answers/{toDoId}`       | `toDoId` (PathVariable, Long)             | 없음                                                                                         | `List<AnswerResponseDto>`                                                                            |
-| **프롬프트 생성 및 AI 응답 저장**| POST `/api/answers/generate`      | 없음                                       | `{ "date": "2024-12-20" }`                                                                   | `{ "message": "응답이 성공적으로 저장되었습니다." }`                                                  |
-| **To Do 작성**                  | POST `/api/todo`                  | 없음                                       | `{ "title": "Sample Task", "description": "Task description", "dueDate": "2024-12-12" }`    | `{ "messege": "작성이 완료되었습니다." }`                                                            |
-| **To Do 수정**                  | PUT `/api/todo/{id}`              | `id` (PathVariable, Long)                 | `{ "title": "Updated Task", "description": "Updated description", "dueDate": "2024-12-15", "completed": true }` | `{ "message": "수정이 완료되었습니다." }`                                                            |
-| **To Do 단건 조회**             | GET `/api/todo/{id}`              | `id` (PathVariable, Long)                 | 없음                                                                                         | `{ "id": 1, "title": "Sample Task", "description": "Task description", "dueDate": "2024-12-12", "completed": false }` |
-| **To Do 삭제**                  | DELETE `/api/todo/{id}`           | `id` (PathVariable, Long)                 | 없음                                                                                         | `{ "message": "항목이 삭제되었습니다." }`                                                            |
-| **To Do 전체 조회**             | GET `/api/todo/alltodo`           | 없음                                       | 없음                                                                                         | `List<GetAllToDoResponseDto>`                                                                        |
-| **특정 날짜의 To Do 조회**       | POST `/api/todo/bydate`           | 없음                                       | `{ "date": "2024-12-12" }`                                                                   | `List<GetToDoByDateResponseDto>`                                                                     |
-| **To Do 완료 여부 수정**         | PATCH `/api/todo/{id}/completed`  | `id` (PathVariable, Long)                 | `{ "completed": true }`                                                                      | `{ "messege": "수정이 완료되었습니다." }`                                                            |
 
 
 ---
@@ -86,7 +86,11 @@ AI 기반의 준비사항 생성은 사용자의 할 일을 분석하고, 맞춤
 ![시퀀스 다이어그램](./docs/sequence-diagram.png)
 
 ---
-## 🛠️ 6. 기술 스택 
+## 🛠️ 6. Test Coverage
+![Jacoco 리포트](./docs/jacoco-test-coverage.png)
+
+---
+## 🛠️ 7. 기술 스택 
 
 | **분류**       | **기술 스택**       |
 |----------------|--------------------|
@@ -97,6 +101,6 @@ AI 기반의 준비사항 생성은 사용자의 할 일을 분석하고, 맞춤
 | **환경 관리**  | Docker, Redis       |
 
 
-## ✉️ 7. contact
+## ✉️ 8. contact
 - Back-end Developer 권하진
 - email: amm_321@naver.com
