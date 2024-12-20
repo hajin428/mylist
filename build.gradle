@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.4'
     id 'io.spring.dependency-management' version '1.1.6'
+    id 'jacoco'
 }
 
 group = 'com.hajin'
@@ -51,6 +52,19 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
 
+}
+
+tasks.jacocoTestReport {
+    dependsOn tasks.test
+    reports {
+        xml.required.set(true) // XML 리포트 생성
+        csv.required.set(false) // CSV 리포트는 생성하지 않음
+        html.required.set(true) // HTML 리포트 생성
+
+        // 리포트가 저장될 경로 설정
+        html.destination file("jacoco/jacocoHtml")
+        xml.destination file("jacoco/jacoco.xml")
+    }
 }
 
 tasks.named('test') {
