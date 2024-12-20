@@ -7,6 +7,8 @@ import com.hajin.mylist.todo.entity.ToDo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import com.hajin.mylist.todo.repository.ToDoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -70,24 +72,18 @@ public class ToDoService {
 
     // 할 일 목록 전체 조회
     @Cacheable(value = "getAllToDos")
-    public List<GetAllToDoResponseDto> getAllToDos() {
+    public Page<GetAllToDoResponseDto> getAllToDos(Pageable pageable) {
 
-        // repository에서 전체 목록 찾기
-        List<ToDo> toDos = toDoRepository.findAll();
+        // repository에서 페이지별 목록 찾기
+        Page<ToDo> toDoPage = toDoRepository.findAll(pageable);
 
         // 목록이 비어 있는 경우 예외 처리
-        if (toDos.isEmpty()) {
+        if (toDoPage.isEmpty()) {
             throw new CustomException(ErrorMsg.TODO_NOT_FOUND);
         }
 
-        List<GetAllToDoResponseDto> responseDtos = new ArrayList<>();
-
-        // 조회한 데이터 DTO로 변환
-        for (ToDo toDo : toDos) {
-            responseDtos.add(new GetAllToDoResponseDto(toDo));
-        }
-
-        return responseDtos;
+        // DTO로 변환
+        return toDoPage.map(GetAllToDoResponseDto::new);
     }
 
 

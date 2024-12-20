@@ -4,6 +4,9 @@ import com.hajin.mylist.todo.dto.*;
 import com.hajin.mylist.todo.service.ToDoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,9 +70,13 @@ public class ToDoController {
     // 전체 목록 조회
     @Operation(summary = "To Do 전체 조회", description = "전체 항목을 조회합니다.")
     @GetMapping("/alltodo")
-    public ResponseEntity<List<GetAllToDoResponseDto>> getAllToDos() {
+    public ResponseEntity<Page<GetAllToDoResponseDto>> getAllToDos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
 
-        List<GetAllToDoResponseDto> responseDtos = toDoService.getAllToDos();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<GetAllToDoResponseDto> responseDtos = toDoService.getAllToDos(pageable);
+
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 

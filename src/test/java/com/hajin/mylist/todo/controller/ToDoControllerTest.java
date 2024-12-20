@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -99,16 +102,21 @@ public class ToDoControllerTest {
     @DisplayName("전체 할 일 조회 테스트")
     void getAllToDos() {
         // Given
-        List<GetAllToDoResponseDto> responseDtos = mock(List.class);
-        when(toDoService.getAllToDos()).thenReturn(responseDtos);
+        int page = 0;
+        int size = 20;
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<GetAllToDoResponseDto> mockPage = mock(Page.class);
+        when(toDoService.getAllToDos(pageable)).thenReturn(mockPage);
 
         // When
-        ResponseEntity<List<GetAllToDoResponseDto>> response = toDoController.getAllToDos();
+        ResponseEntity<Page<GetAllToDoResponseDto>> response = toDoController.getAllToDos(page, size);
 
         // Then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(responseDtos, response.getBody());
+        assertEquals(mockPage, response.getBody());
     }
+
 
     @Test
     @DisplayName("할 일 완료 여부 수정 테스트")

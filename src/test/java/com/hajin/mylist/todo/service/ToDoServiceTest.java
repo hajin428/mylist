@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -205,31 +209,47 @@ class ToDoServiceTest {
     @DisplayName("전체 할 일 조회 - 성공 케이스")
     void getAllToDos_Success() {
         // Given
-        List<ToDo> toDoList = new ArrayList<>();
-        toDoList.add(mock(ToDo.class));
-        when(toDoRepository.findAll()).thenReturn(toDoList);
+        int page = 0;
+        int size = 5;
+        Pageable pageable = PageRequest.of(page, size);
+
+        ToDo mockToDo = mock(ToDo.class);
+        when(mockToDo.getTitle()).thenReturn("Test Title");
+        when(mockToDo.getDueDate()).thenReturn(LocalDate.now());
+        when(mockToDo.isCompleted()).thenReturn(false);
+
+        List<ToDo> toDoList = List.of(mockToDo);
+        Page<ToDo> toDoPage = new PageImpl<>(toDoList, pageable, toDoList.size());
+
+        when(toDoRepository.findAll(pageable)).thenReturn(toDoPage);
 
         // When
-        List<GetAllToDoResponseDto> response = toDoService.getAllToDos();
+        Page<GetAllToDoResponseDto> response = toDoService.getAllToDos(pageable);
 
         // Then
-        assertEquals(1, response.size());
-        verify(toDoRepository, times(1)).findAll();
+        assertEquals(1, response.getTotalElements());
+        assertEquals("Test Title", response.getContent().get(0).getTitle());
+        verify(toDoRepository, times(1)).findAll(pageable);
     }
+
+
 
     @Test
     @DisplayName("할 일 목록 조회 - 목록이 비어 있을 때 예외 발생")
     void getAllToDos_EmptyList() {
         // Given
-        when(toDoRepository.findAll()).thenReturn(new ArrayList<>());
+        int page = 0;
+        int size = 5;
+        Pageable pageable = PageRequest.of(page, size);
+
+        when(toDoRepository.findAll(pageable)).thenReturn(Page.empty());
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> toDoService.getAllToDos());
+        CustomException exception = assertThrows(CustomException.class, () -> toDoService.getAllToDos(pageable));
 
-        assertEquals(1000, exception.getCode());
-        verify(toDoRepository, times(1)).findAll();
+        assertEquals(ErrorMsg.TODO_NOT_FOUND.getCode(), exception.getCode());
+        verify(toDoRepository, times(1)).findAll(pageable);
     }
-
 
 
     @Test
