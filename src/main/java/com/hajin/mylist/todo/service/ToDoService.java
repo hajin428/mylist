@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,10 +90,10 @@ public class ToDoService {
 
     // 특정 날짜의 할 일 목록 조회
     @Cacheable(value = "getToDosByDate", key = "#requestDto.date.toString()")
-    public List<GetToDoByDateResponseDto> getToDosByDate(GetToDoByDateRequestDto requestDto) {
+    public List<GetToDoByDateResponseDto> getToDosByDate(LocalDate date) {
 
         // 특정 날짜의 To Do 목록만 조회
-        List<ToDo> toDos = toDoRepository.findAllByDueDate(requestDto.getDate());
+        List<ToDo> toDos = toDoRepository.findAllByDueDate(date);
 
         // 목록이 비어 있으면 예외 발생
         if (toDos.isEmpty()) {
