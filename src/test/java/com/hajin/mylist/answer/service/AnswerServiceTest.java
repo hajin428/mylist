@@ -12,7 +12,6 @@ import com.hajin.mylist.openAi.dto.OpenAiResponseDto;
 import com.hajin.mylist.prompt.promptGenerator.ToDoPromptGenerator;
 import com.hajin.mylist.todo.entity.ToDo;
 import com.hajin.mylist.todo.repository.ToDoRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

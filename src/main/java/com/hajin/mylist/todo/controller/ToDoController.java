@@ -83,7 +83,7 @@ public class ToDoController {
 
     // 특정 날짜의 할 일 목록 조회
     @Operation(summary = "특정 날짜의 To Do 조회", description = "특정 날짜에 등록된 할 일 목록을 조회합니다.")
-    @PostMapping("/bydate")
+    @GetMapping("/bydate")
     public ResponseEntity<List<GetToDoByDateResponseDto>> getToDosByDate(
             @RequestBody GetToDoByDateRequestDto requestDto) {
 
