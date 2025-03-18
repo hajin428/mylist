@@ -15,5 +15,5 @@ public interface ToDoRepository extends JpaRepository<ToDo, Long> {
     Page<ToDo> findAll (Pageable pageable);
 
     // 특정 날짜의 To Do 목록 조회
-    List<ToDo> findAllByDueDate(LocalDate dueDate);
+    List<ToDo> findAllByDueDate(LocalDate date);
 }

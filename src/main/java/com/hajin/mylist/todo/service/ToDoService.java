@@ -89,7 +89,7 @@ public class ToDoService {
 
 
     // 특정 날짜의 할 일 목록 조회
-    @Cacheable(value = "getToDosByDate", key = "#requestDto.date.toString()")
+    @Cacheable(value = "getToDosByDate", key = "#date.toString()")
     public List<GetToDoByDateResponseDto> getToDosByDate(LocalDate date) {
 
         // 특정 날짜의 To Do 목록만 조회
